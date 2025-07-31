@@ -36,7 +36,7 @@ action:
 - service: rest_command.update_loxone
   data:
     miniserver: !input target_miniserver
-    user: !input target_miniserver_user
+    username: !input target_miniserver_user
     password: !input target_miniserver_password
     parameter: '{{ trigger.entity_id  }}/{{ trigger.to_state.attributes.current_position  }}'
 #    parameter: '{{ trigger.entity_id  }}.current_position/{{ trigger.to_state.attributes.current_position  }}'

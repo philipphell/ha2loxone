@@ -1,0 +1,47 @@
+blueprint:
+  name: Home Assistant State to Loxone
+  description: Send entity states from Home Assistant to Loxone
+  domain: automation
+  input:
+    target_miniserver:
+      name: Miniserver Address/DNS Name
+      selector:
+        text:
+    target_miniserver_user:
+      name: Miniserver User
+      selector:
+        text: {}
+    target_miniserver_password:
+      name: Miniserver Password
+      selector:
+        text:
+          type: password
+          multiple: false
+          multiline: false  
+    target_entities:
+      name: Trigger entities
+      description: List the entities that will be sent to the VI's on the Miniserver
+      selector:
+        entity:
+          multiple: true
+          filter:
+          - domain:
+            - sensor
+            - binary_sensor
+            - cover
+            - vacuum
+            - lawn_mower
+alias: Update Loxone (State)
+description: ''
+trigger:
+- platform: state
+  entity_id: !input target_entities
+condition: []
+action:
+- service: rest_command.update_loxone
+  data:
+    miniserver: !input target_miniserver
+    username: !input target_miniserver_user
+    password: !input target_miniserver_password
+    parameter: '{{ trigger.entity_id  }}.state/{{ trigger.to_state.state  }}'
+mode: parallel

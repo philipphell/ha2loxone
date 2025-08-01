@@ -6,16 +6,18 @@ blueprint:
     target_miniserver:
       name: Miniserver Address/DNS Name
       selector:
-        text:
-    target_miniserver_user: 
+        text: {}
+    target_miniserver_user:
       name: Miniserver User
-      selector: 
-        text: 
-    target_miniserver_password: 
+      selector:
+        text: {}
+    target_miniserver_password:
       name: Miniserver Password
-      selector: 
-        text: 
+      selector:
+        text:
           type: password
+          multiple: false
+          multiline: false
     target_entities:
       name: Trigger entities
       description: List the entities that will be sent to the VI's on the Miniserver
@@ -25,7 +27,7 @@ blueprint:
           filter:
           - domain:
             - cover
-  # source_url: https://gist.github.com/gigatexel/fb6c10e7202ad4b994aaadd9e82963f1
+  source_url: https://github.com/philipphell/ha2loxone/blob/ed42d6635a87d62a31c9d6bbf939d852ad55bca6/blueprints/cover__current_position.yaml
 alias: Update Loxone (Cover Position)
 description: ''
 trigger:
@@ -36,8 +38,7 @@ action:
 - service: rest_command.update_loxone
   data:
     miniserver: !input target_miniserver
-    user: !input target_miniserver_user
+    username: !input target_miniserver_user
     password: !input target_miniserver_password
     parameter: '{{ trigger.entity_id  }}/{{ trigger.to_state.attributes.current_position  }}'
-#    parameter: '{{ trigger.entity_id  }}.current_position/{{ trigger.to_state.attributes.current_position  }}'
 mode: parallel
